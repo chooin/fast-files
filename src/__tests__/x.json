@@ -1,0 +1,9 @@
+{
+  "boolean": false,
+  "string": "string",
+  "number": 1024,
+  "object": {
+    "number": 2048
+  },
+  "date": "2021-05-13"
+}

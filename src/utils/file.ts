@@ -3,7 +3,7 @@ import {readFileSync, writeFileSync} from 'fs'
 interface Params {
   exists: boolean;
   value: string | null;
-  getValue(): string;
+  get(): string;
   readFile(path: string): Params;
   saveFile(path: string, value: string): Params;
 }
@@ -11,7 +11,7 @@ interface Params {
 export default {
   exists: true,
   value: null,
-  getValue() {
+  get() {
     return this.value
   },
   readFile(path: string) {

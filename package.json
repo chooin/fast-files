@@ -1,8 +1,8 @@
 {
-  "name": "fast-utils",
+  "name": "fast-files",
   "version": "1.0.0",
-  "main": "index.js",
-  "repository": "git@github.com:chooin/fast-utils.git",
+  "main": "dist/index.js",
+  "repository": "git@github.com:chooin/fast-files.git",
   "author": "Devin.Zhu <chooin@126.com>",
   "license": "MIT",
   "devDependencies": {

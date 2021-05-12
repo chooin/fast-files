@@ -6,8 +6,8 @@ interface Params {
   value: {
     [k: string]: any
   } | null;
-  getValue(key?: string): any;
-  setValue(key: string, value: any): Params;
+  get(key?: string): any;
+  set(key: string, value: any): Params;
   merge(value: {
     [k: string]: any
   }): Params;
@@ -18,15 +18,17 @@ interface Params {
 export default {
   path: null,
   value: null,
-  getValue(key?: string) {
+  get(key?: string) {
     if (isDefined(key)) {
+      // @ts-ignore
       return _.get(this.value, key)
     } else {
       return this.value
     }
   },
-  setValue(key: string, value: any) {
+  set(key: string, value: any) {
     if (isDefined(value)) {
+      // @ts-ignore
       _.set(this.value, key, value)
     }
 
@@ -42,9 +44,10 @@ export default {
   readFile(path: string) {
     try {
       this.path = path
-      let value = file.readFile(this.path).getValue()
+      let value = file.readFile(this.path).get()
       value = JSON.parse(value)
       if (isObject(value)) {
+        // @ts-ignore
         this.value = value
       } else {
         new Error()
@@ -56,7 +59,8 @@ export default {
     return this
   },
   saveFile(path?: string) {
-    path = path ?? this.path
+    // @ts-ignore
+    path = (path ?? this.path) as string
     const value = JSON.stringify(this.value, null, 2)
     file.saveFile(
       path,
