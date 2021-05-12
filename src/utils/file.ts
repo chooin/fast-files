@@ -2,17 +2,21 @@ import {readFileSync, writeFileSync} from 'fs'
 
 interface Params {
   exists: boolean;
-  content: string | null;
-  read(path: string): Params;
-  save(path: string, content: string): Params;
+  value: string | null;
+  getValue(): string;
+  readFile(path: string): Params;
+  saveFile(path: string, value: string): Params;
 }
 
 export default {
   exists: true,
-  content: null,
-  read(path: string) {
+  value: null,
+  getValue() {
+    return this.value
+  },
+  readFile(path: string) {
     try {
-      this.content = readFileSync(path, 'utf-8')
+      this.value = readFileSync(path, 'utf-8')
     } catch (error) {
       if (error.code === 'ENOENT') {
         this.exists = false
@@ -23,8 +27,8 @@ export default {
 
     return this
   },
-  save(path: string, content: string) {
-    writeFileSync(path, content ?? this.content, {
+  saveFile(path: string, value: string) {
+    writeFileSync(path, value ?? this.value, {
       encoding: 'utf-8'
     })
   }

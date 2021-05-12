@@ -1,38 +1,67 @@
 import _ from 'lodash'
-import {file} from '../utils'
+import {file, isDefined, isObject} from '../utils'
 
 interface Params {
   path: string | null;
-  content: {
+  value: {
     [k: string]: any
   } | null;
-  read(path: string): Params;
-  get(key: string): any;
-  set(key: string, value: string): Params;
-  save(path: string): Params;
+  getValue(key?: string): any;
+  setValue(key: string, value: any): Params;
+  merge(value: {
+    [k: string]: any
+  }): Params;
+  readFile(path: string): Params;
+  saveFile(path?: string): Params;
 }
 
 export default {
   path: null,
-  content: null,
-  read(path: string) {
-    this.path = path
-    this.content = JSON.parse(file.read(this.path).content)
-
-    return this
+  value: null,
+  getValue(key?: string) {
+    if (isDefined(key)) {
+      return _.get(this.value, key)
+    } else {
+      return this.value
+    }
   },
-  get(key: string) {
-    return _.get(this.content, key)
-  },
-  set(key: string, value: string) {
-    if (typeof value !== undefined) {
-      _.set(this.content, key, value)
+  setValue(key: string, value: any) {
+    if (isDefined(value)) {
+      _.set(this.value, key, value)
     }
 
     return this
   },
-  save(path: string) {
-    file.save(path ?? this.path, this.content)
+  merge(value: {
+    [k: string]: any
+  }) {
+    this.value = _.merge(this.value, value)
+
+    return this
+  },
+  readFile(path: string) {
+    try {
+      this.path = path
+      let value = file.readFile(this.path).getValue()
+      value = JSON.parse(value)
+      if (isObject(value)) {
+        this.value = value
+      } else {
+        new Error()
+      }
+    } catch (e) {
+      throw e
+    }
+
+    return this
+  },
+  saveFile(path?: string) {
+    path = path ?? this.path
+    const value = JSON.stringify(this.value, null, 2)
+    file.saveFile(
+      path,
+      value,
+    )
 
     return this
   }
