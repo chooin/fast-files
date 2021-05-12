@@ -1,0 +1,8 @@
+{
+  "boolean": true,
+  "string": "string",
+  "number": 1024,
+  "object": {
+    "number": 2048
+  }
+}
