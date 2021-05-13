@@ -1,4 +1,4 @@
-import {readFileSync, writeFileSync} from 'fs'
+import {readFileSync, writeFileSync, existsSync, mkdirpSync} from 'fs-extra'
 
 interface File {
   exists: boolean;
@@ -25,6 +25,13 @@ export default (): File => {
       return this
     },
     saveFile(path, value) {
+      const dir = path
+        .split('/')
+        .slice(0, -1)
+        .join('/')
+      if (!existsSync(dir)) {
+        mkdirpSync(dir)
+      }
       writeFileSync(path, value ?? this.parsed, {
         encoding: 'utf-8'
       })

@@ -1,4 +1,5 @@
 import path from 'path'
+import {removeSync} from 'fs-extra'
 import {json} from '../index'
 import dayjs from 'dayjs'
 
@@ -26,14 +27,17 @@ test('json set', () => {
 })
 
 test('json create', () => {
+  const filePath = path.resolve(__dirname, './create/json/create.json')
   json()
     .set('date', dayjs().format('YYYY-MM-DD'))
     .set('object', {
       number: 4096
     })
-    .saveFile(path.resolve(__dirname, 'create.json'))
+    .saveFile(filePath)
 
-  const createObject = json().readFile(path.resolve(__dirname, './create.json'))
+  const createObject = json().readFile(filePath)
   expect(createObject.get('date')).toBe(dayjs().format('YYYY-MM-DD'))
   expect(createObject.get('object.number')).toBe(4096)
+
+  removeSync(path.resolve(__dirname, './create'))
 })
