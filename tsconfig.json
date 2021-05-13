@@ -4,11 +4,11 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "./dist",
-    "sourceMap": false,
+    "sourceMap": true,
     "declaration": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
   },
   "include": ["src/index.ts"]
 }
