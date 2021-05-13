@@ -1,13 +1,13 @@
 import {readFileSync, writeFileSync} from 'fs'
 
-interface Params {
+interface File {
   exists: boolean;
   parsed: string;
-  readFile(path: string): Params;
-  saveFile(path: string, value: string): void;
+  readFile(path: string): File;
+  saveFile(path: string, value: string): File;
 }
 
-export default (): Params => {
+export default (): File => {
   return {
     exists: true,
     parsed: '',
@@ -28,6 +28,8 @@ export default (): Params => {
       writeFileSync(path, value ?? this.parsed, {
         encoding: 'utf-8'
       })
+
+      return this
     }
   }
 }

@@ -1,21 +1,21 @@
 import _ from 'lodash'
 import {file, isDefined, isObject} from '../utils'
 
-interface Params {
+interface Json {
   path: string;
   parsed: {
     [k: string]: any
   };
   get(key?: string): any | void;
-  set(key: string, value: any): Params;
+  set(key: string, value: any): Json;
   merge(value: {
     [k: string]: any
-  }): Params;
-  readFile(path: string): Params;
-  saveFile(path?: string): Params;
+  }): Json;
+  readFile(path: string): Json;
+  saveFile(path?: string): Json;
 }
 
-export default (): Params => {
+export default (): Json => {
   return {
     path: '',
     parsed: {},
