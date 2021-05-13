@@ -14,11 +14,11 @@ export default (): File => {
     readFile(path) {
       try {
         this.parsed = readFileSync(path, 'utf-8')
-      } catch (error) {
-        if (error.code === 'ENOENT') {
+      } catch (e) {
+        if (e.code === 'ENOENT') {
           this.exists = false
         } else {
-          throw error
+          throw e
         }
       }
 
