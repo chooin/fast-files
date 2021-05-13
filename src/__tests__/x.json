@@ -1,9 +1,9 @@
 {
-  "boolean": false,
+  "boolean": true,
   "string": "string",
   "number": 1024,
   "object": {
-    "number": 2048
+    "boolean": false
   },
   "date": "2021-05-13"
 }

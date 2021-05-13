@@ -15,21 +15,25 @@ test('json read', () => {
 test('json set', () => {
   const jsonObject = json().readFile(path.resolve(__dirname, './json.json'))
   jsonObject.set('date', dayjs().format('YYYY-MM-DD'))
-  jsonObject.set('boolean', false)
+  jsonObject.set('object', {
+    boolean: false
+  })
   jsonObject.saveFile(path.resolve(__dirname, 'x.json'))
 
   const xObject = json().readFile(path.resolve(__dirname, './x.json'))
   expect(xObject.get('date')).toBe(dayjs().format('YYYY-MM-DD'))
-  expect(xObject.get('boolean')).toBe(false)
+  expect(xObject.get('object.boolean')).toBe(false)
 })
 
 test('json create', () => {
   json()
     .set('date', dayjs().format('YYYY-MM-DD'))
-    .set('boolean', false)
+    .set('object', {
+      number: 4096
+    })
     .saveFile(path.resolve(__dirname, 'create.json'))
 
   const createObject = json().readFile(path.resolve(__dirname, './create.json'))
   expect(createObject.get('date')).toBe(dayjs().format('YYYY-MM-DD'))
-  expect(createObject.get('boolean')).toBe(false)
+  expect(createObject.get('object.number')).toBe(4096)
 })

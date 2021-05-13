@@ -1,4 +1,6 @@
 {
   "date": "2021-05-13",
-  "boolean": false
+  "object": {
+    "number": 4096
+  }
 }

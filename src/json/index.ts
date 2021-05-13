@@ -6,7 +6,7 @@ interface Json {
   parsed: {
     [k: string]: any
   };
-  get(key?: string): any | void;
+  get(key: string): any | void;
   set(key: string, value: any): Json;
   merge(value: {
     [k: string]: any
