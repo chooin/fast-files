@@ -19,7 +19,9 @@ test('json set', () => {
   jsonObject.set('object', {
     boolean: false
   })
-  jsonObject.saveFile(path.resolve(__dirname, 'x.json'))
+  jsonObject.saveFile(path.resolve(__dirname, 'x.json'), {
+    override: true
+  })
 
   const xObject = json().readFile(path.resolve(__dirname, './x.json'))
   expect(xObject.get('date')).toBe(dayjs().format('YYYY-MM-DD'))
@@ -38,7 +40,6 @@ test('json create', () => {
       override: true
     })
   json()
-    .set('date', dayjs().format('YYYY-MM-DD'))
     .set('object', {
       number: 8192
     })
@@ -49,7 +50,6 @@ test('json create', () => {
   expect(createObject.get('object.number')).toBe(4096)
 
   const writableFalseFilePathObject = json().readFile(writableFalseFilePath)
-  expect(writableFalseFilePathObject.get('date')).toBe(dayjs().format('YYYY-MM-DD'))
   expect(writableFalseFilePathObject.get('object.number')).toBe(4096)
 
   removeSync(path.resolve(__dirname, './create'))
