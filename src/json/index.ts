@@ -25,13 +25,11 @@ export default (): Json => {
     parsed: {},
     get(key) {
       if (isDefined(key)) {
-        // @ts-ignore
         return _.get(this.parsed, key)
       }
     },
     set(key, data) {
       if (isDefined(data)) {
-        // @ts-ignore
         _.set(this.parsed, key, data)
       }
 
@@ -51,10 +49,10 @@ export default (): Json => {
             this.parsed = parsed
             this.path = path
           } else {
-            new Error(`It's not a JSON file: ${path}`)
+            throw `It's not a JSON file: ${path}`
           }
         } else {
-          new Error(`File not found: ${path}`)
+          throw `File not found: ${path}`
         }
       } catch (e) {
         throw e
