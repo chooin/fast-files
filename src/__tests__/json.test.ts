@@ -28,16 +28,30 @@ test('json set', () => {
 
 test('json create', () => {
   const filePath = path.resolve(__dirname, './create/json/create.json')
+  const writableFalseFilePath = path.resolve(__dirname, './writable-false.json')
   json()
     .set('date', dayjs().format('YYYY-MM-DD'))
     .set('object', {
       number: 4096
     })
-    .saveFile(filePath)
+    .saveFile(filePath, {
+      override: true
+    })
+  json()
+    .set('date', dayjs().format('YYYY-MM-DD'))
+    .set('object', {
+      number: 8192
+    })
+    .saveFile(writableFalseFilePath)
 
   const createObject = json().readFile(filePath)
   expect(createObject.get('date')).toBe(dayjs().format('YYYY-MM-DD'))
   expect(createObject.get('object.number')).toBe(4096)
 
+  const writableFalseFilePathObject = json().readFile(writableFalseFilePath)
+  expect(writableFalseFilePathObject.get('date')).toBe(dayjs().format('YYYY-MM-DD'))
+  expect(writableFalseFilePathObject.get('object.number')).toBe(4096)
+
   removeSync(path.resolve(__dirname, './create'))
 })
+

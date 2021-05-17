@@ -1,2 +1,2 @@
-export {default as file} from './file'
+export * as file from './file'
 export * from './is'

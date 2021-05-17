@@ -1,42 +1,123 @@
-import {readFileSync, writeFileSync, existsSync, mkdirpSync} from 'fs-extra'
+import fs from 'fs-extra'
 
-interface File {
-  exists: boolean;
+type ReadFile = {
+  exists: false;
+} | {
   parsed: string;
-  readFile(path: string): File;
-  saveFile(path: string, value: string): File;
+  exists: true;
 }
 
-export default (): File => {
-  return {
-    exists: true,
-    parsed: '',
-    readFile(path) {
-      try {
-        this.parsed = readFileSync(path, 'utf-8')
-      } catch (e) {
-        if (e.code === 'ENOENT') {
-          this.exists = false
-        } else {
-          throw e
-        }
-      }
+interface CopyFile {
+  src: string;
+  dest: string;
+}
 
-      return this
-    },
-    saveFile(path, value) {
-      const dir = path
-        .split('/')
-        .slice(0, -1)
-        .join('/')
-      if (!existsSync(dir)) {
-        mkdirpSync(dir)
-      }
-      writeFileSync(path, value ?? this.parsed, {
-        encoding: 'utf-8'
-      })
+interface CopyFileOptions {
+  override: boolean;
+}
 
-      return this
+export const readFile = (path: string): ReadFile => {
+  if (fs.existsSync(path)) {
+    const parsed = fs.readFileSync(path, 'utf-8')
+    return {
+      parsed,
+      exists: true,
+    }
+  } else {
+    return {
+      exists: false,
     }
   }
+}
+
+export const saveFile = (
+  path: string,
+  data: string | NodeJS.ArrayBufferView,
+  options: CopyFileOptions = {
+    override: false
+  }
+): void => {
+  const exists = fs.existsSync(path)
+  if (
+    options &&
+    options.override
+  ) {
+
+  } else {
+    if (exists) {
+      return
+    }
+  }
+  const destDir = path
+    .split('/')
+    .slice(0, -1)
+    .join('/')
+  if (!fs.existsSync(destDir)) {
+    fs.mkdirpSync(destDir)
+  }
+  fs.writeFileSync(path, data, {
+    encoding: 'utf-8'
+  })
+}
+
+export const copyFile = (
+  src: string,
+  dest: string,
+  options: CopyFileOptions = {
+    override: false
+  }
+): void => {
+  const exists = fs.existsSync(dest)
+  if (
+    options &&
+    options.override
+  ) {
+
+  } else {
+    if (exists) {
+      return
+    }
+  }
+  const destDir = dest
+    .split('/')
+    .slice(0, -1)
+    .join('/')
+  if (!fs.existsSync(destDir)) {
+    fs.mkdirpSync(destDir)
+  }
+  fs.copyFileSync(src, dest);
+}
+
+export const copyFiles = (
+  files: CopyFile[],
+  options: CopyFileOptions = {
+    override: false
+  }
+): void => {
+  let exists = false
+  files.forEach((file) => {
+    if (fs.existsSync(file.dest)) {
+      exists = true
+    }
+  })
+  if (
+    options &&
+    options.override
+  ) {
+
+  } else {
+    if (exists) {
+      return
+    }
+  }
+  files.forEach((file) => {
+    const destDir = file.dest
+      .split('/')
+      .slice(0, -1)
+      .join('/')
+    if (!fs.existsSync(destDir)) {
+      fs.mkdirpSync(destDir)
+    }
+    fs.copyFileSync(file.src, file.dest);
+  })
 }

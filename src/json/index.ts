@@ -7,12 +7,16 @@ interface Json {
     [k: string]: any
   };
   get(key: string): any | void;
-  set(key: string, value: any): Json;
-  merge(value: {
+  set(key: string, data: any): Json;
+  merge(data: {
     [k: string]: any
   }): Json;
   readFile(path: string): Json;
-  saveFile(path?: string): Json;
+  saveFile(
+    path?: string,
+    options?: {
+      override: boolean;
+    }): Json;
 }
 
 export default (): Json => {
@@ -25,43 +29,48 @@ export default (): Json => {
         return _.get(this.parsed, key)
       }
     },
-    set(key, value) {
-      if (isDefined(value)) {
+    set(key, data) {
+      if (isDefined(data)) {
         // @ts-ignore
-        _.set(this.parsed, key, value)
+        _.set(this.parsed, key, data)
       }
 
       return this
     },
-    merge(value) {
-      this.parsed = _.merge(this.parsed, value)
+    merge(data) {
+      this.parsed = _.merge(this.parsed, data)
 
       return this
     },
     readFile(path) {
       try {
-        this.path = path
-        let value = file().readFile(this.path).parsed
-        value = JSON.parse(value)
-        if (isObject(value)) {
-          // @ts-ignore
-          this.parsed = value
+        const f = file.readFile(path)
+        if (f.exists) {
+          const parsed = JSON.parse(f.parsed)
+          if (isObject(parsed)) {
+            this.parsed = parsed
+            this.path = path
+          } else {
+            new Error(`It's not a JSON file: ${path}`)
+          }
         } else {
-          new Error()
+          new Error(`File not found: ${path}`)
         }
       } catch (e) {
         throw e
       }
-
       return this
     },
-    saveFile(path) {
-      // @ts-ignore
-      path = (path ?? this.path) as string
-      const value = JSON.stringify(this.parsed, null, 2)
-      file().saveFile(
+    saveFile(
+      path,
+      options
+    ) {
+      path = path ?? this.path
+      const data = JSON.stringify(this.parsed, null, 2)
+      file.saveFile(
         path,
-        value,
+        data,
+        options
       )
 
       return this
