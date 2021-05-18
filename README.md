@@ -30,6 +30,18 @@ file.parsed
 //     number: 2048
 //   }
 // }
+file.merge({
+  number: 2048,
+  boolean: false
+})
+file.parsed
+// {
+//   number: 2048,
+//   object: {
+//     number: 2048
+//   },
+//  boolean: false
+// }
 ```
 
 #### save
