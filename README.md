@@ -2,7 +2,7 @@
 
 ### JSON
 
-##### parse JSON files
+##### Parse JSON files
 
 ```js
 import path from 'path'
@@ -14,7 +14,7 @@ json().readFile(path.resolve(__dirname, './json.json')).parsed
 // }
 ```
 
-##### change JSON files
+##### Change JSON files
 
 ```js
 import path from 'path'
@@ -44,7 +44,7 @@ file.parsed
 // }
 ```
 
-#### create JSON files
+#### Create JSON files
 
 ```js
 import path from 'path'
@@ -61,7 +61,7 @@ file.parsed
 // }
 ```
 
-#### save JSON files
+#### Save JSON files
 
 ```js
 import path from 'path'
