@@ -40,7 +40,7 @@ file.parsed
 //   object: {
 //     number: 2048
 //   },
-//  boolean: false
+//   boolean: false
 // }
 ```
 
