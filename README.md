@@ -1,8 +1,8 @@
 # fast-files
 
-### json
+### JSON
 
-##### parse
+##### parse JSON files
 
 ```js
 import path from 'path'
@@ -14,7 +14,7 @@ json().readFile(path.resolve(__dirname, './json.json')).parsed
 // }
 ```
 
-##### change
+##### change JSON files
 
 ```js
 import path from 'path'
@@ -44,7 +44,24 @@ file.parsed
 // }
 ```
 
-#### save
+#### create JSON files
+
+```js
+import path from 'path'
+import {json} from 'fast-files'
+
+file.set('number', 1024)
+file.set('object.number', 2048)
+file.parsed
+// {
+//   number: 1024,
+//   object: {
+//     number: 2048
+//   }
+// }
+```
+
+#### save JSON files
 
 ```js
 import path from 'path'
