@@ -1,6 +1,6 @@
 import path from 'path'
 import {removeSync} from 'fs-extra'
-import {json} from '../index'
+import {json} from '../../index'
 import dayjs from 'dayjs'
 
 test('json read', () => {

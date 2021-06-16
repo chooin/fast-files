@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "fs-extra": "^10.0.0",
+    "gogocode": "^0.2.26",
     "lodash": "^4.17.21"
   },
   "scripts": {

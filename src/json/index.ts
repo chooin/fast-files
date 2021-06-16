@@ -1,25 +1,26 @@
 import _ from 'lodash'
 import {file, isDefined, isObject} from '../utils'
 
-interface Json {
+interface JSON {
   path: string;
   parsed: {
     [k: string]: any
   };
   get(key: string): any | void;
-  set(key: string, data: any): Json;
+  set(key: string, data: any): JSON;
   merge(data: {
     [k: string]: any
-  }): Json;
-  readFile(path: string): Json;
+  }): JSON;
+  readFile(path: string): JSON;
   saveFile(
     path?: string,
     options?: {
-      override: boolean;
-    }): Json;
+      override?: boolean;
+      space?: number;
+    }): JSON;
 }
 
-export default (): Json => {
+export default (): JSON => {
   return {
     path: '',
     parsed: {},
@@ -49,26 +50,32 @@ export default (): Json => {
             this.parsed = parsed
             this.path = path
           } else {
-            throw `It's not a JSON file: ${path}`
+            new TypeError(`File ${path} is not a JSON`)
           }
         } else {
-          throw `File not found: ${path}`
+          new Error(`File ${path} not found`)
         }
       } catch (e) {
-        throw e
+        throw e.message
       }
       return this
     },
     saveFile(
       path,
-      options
+      options = {}
     ) {
       path = path ?? this.path
-      const data = JSON.stringify(this.parsed, null, 2)
+      const {
+        override = false,
+        space = 2
+      } = options
+      const data = JSON.stringify(this.parsed, null, space)
       file.saveFile(
         path,
         data,
-        options
+        {
+          override,
+        }
       )
 
       return this
