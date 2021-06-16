@@ -1,3 +1,5 @@
+const a = require('a');
+
 export default () => {
-  var a = 2
+  var b = 2
 }

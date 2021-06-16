@@ -89,3 +89,15 @@ js()
     override: true,
   })
 ```
+
+#### Get code
+
+```js
+import path from 'path';
+import {js} from 'fast-files';
+
+const code = js()
+  .readFile(path.resolve(__dirname, './js.js'))
+  .code()
+// var a = 1;
+```

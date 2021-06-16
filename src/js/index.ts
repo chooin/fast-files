@@ -4,9 +4,10 @@ import {file} from '../utils';
 
 interface Js {
   path: string;
-  parsed: any;
+  ast: any;
   readFile(path: string): Js;
   replace(selector: string | t.Node, replacer: string | t.Node): Js;
+  get(): void;
   saveFile(
     path?: string | null,
     options?: {
@@ -20,12 +21,12 @@ interface Js {
 export default (): Js => {
   return {
     path: '',
-    parsed: null,
+    ast: null,
     readFile(path) {
       try {
         const f = file.readFile(path)
         if (f.exists) {
-          this.parsed = $(f.parsed)
+          this.ast = $(f.parsed)
           this.path = path
         } else {
           new Error(`File ${path} not found`)
@@ -37,10 +38,15 @@ export default (): Js => {
       return this
     },
     replace(selector, replacer) {
-      this.parsed = this.parsed
+      this.ast = this.ast
         .replace(selector, replacer)
 
       return this
+    },
+    get() {
+      return this.ast
+        .root()
+        .generate();
     },
     saveFile(
       path: string,
@@ -50,7 +56,7 @@ export default (): Js => {
       const {
         override = false,
       } = options
-      const data = this.parsed
+      const data = this.ast
         .root()
         .generate();
 
@@ -63,6 +69,6 @@ export default (): Js => {
       )
 
       return this
-    }
+    },
   }
 }

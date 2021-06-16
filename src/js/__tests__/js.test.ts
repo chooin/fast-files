@@ -2,10 +2,10 @@ import * as path from 'path'
 import {js} from '../../index'
 
 test('read js files', () => {
-  const jsContent = js()
+  js()
     .readFile(path.resolve(__dirname, './index.md'))
-    .replace('var a = 2', 'var bx = 2')
-    .saveFile(null, {
+    .replace('const $_$1 = require($_$2)', 'import $_$1 from $_$2')
+    .saveFile(path.resolve(__dirname, './index.mdd'), {
       override: true
     })
 })
