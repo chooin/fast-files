@@ -13,7 +13,7 @@ interface JSON {
   }): JSON;
   readFile(path: string): JSON;
   saveFile(
-    path?: string,
+    path?: string | null,
     options?: {
       override?: boolean;
       space?: number;
@@ -58,6 +58,7 @@ export default (): JSON => {
       } catch (e) {
         throw e.message
       }
+
       return this
     },
     saveFile(

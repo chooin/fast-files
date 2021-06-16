@@ -1,4 +1,5 @@
-import fs from 'fs-extra'
+import {parse} from 'path';
+import fs from 'fs-extra';
 
 type ReadFile = {
   exists: false;
@@ -48,10 +49,7 @@ export const saveFile = (
       return
     }
   }
-  const destDir = path
-    .split('/')
-    .slice(0, -1)
-    .join('/')
+  const destDir = parse(path).dir;
   if (!fs.existsSync(destDir)) {
     fs.mkdirpSync(destDir)
   }
@@ -78,10 +76,7 @@ export const copyFile = (
       return
     }
   }
-  const destDir = dest
-    .split('/')
-    .slice(0, -1)
-    .join('/')
+  const destDir = parse(dest).dir;
   if (!fs.existsSync(destDir)) {
     fs.mkdirpSync(destDir)
   }
@@ -111,10 +106,7 @@ export const copyFiles = (
     }
   }
   files.forEach((file) => {
-    const destDir = file.dest
-      .split('/')
-      .slice(0, -1)
-      .join('/')
+    const destDir = parse(file.dest).dir;
     if (!fs.existsSync(destDir)) {
       fs.mkdirpSync(destDir)
     }

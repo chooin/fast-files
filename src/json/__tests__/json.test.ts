@@ -1,4 +1,4 @@
-import path from 'path'
+import * as path from 'path'
 import {removeSync} from 'fs-extra'
 import {json} from '../../index'
 import dayjs from 'dayjs'

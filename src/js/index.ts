@@ -1,12 +1,14 @@
 import $ from 'gogocode'
-import {file, isObject} from "../utils";
+import * as t from '@babel/types';
+import {file} from '../utils';
 
 interface JS {
   path: string;
-  parsed: string;
+  parsed: any;
   readFile(path: string): JS;
+  replace(selector: string | t.Node, replacer: string | t.Node): JS;
   saveFile(
-    path?: string,
+    path?: string | null,
     options?: {
       override?: boolean;
     }): JS;
@@ -15,27 +17,48 @@ interface JS {
 export default (): JS => {
   return {
     path: '',
-    parsed: '',
+    parsed: null,
     readFile(path) {
       try {
         const f = file.readFile(path)
         if (f.exists) {
-          const parsed = JSON.parse(f.parsed)
-          if (isObject(parsed)) {
-            this.parsed = parsed
-            this.path = path
-          } else {
-            new TypeError(`File ${path} is not a JS`)
-          }
+          this.parsed = $(f.parsed)
+          this.path = path
         } else {
-          new Error(`File  ${path} not found`)
+          new Error(`File ${path} not found`)
         }
       } catch (e) {
         throw e.message
       }
+
       return this
     },
-    saveFile(path: string, options) {
+    replace(selector, replacer) {
+      this.parsed = this.parsed
+        .replace(selector, replacer)
+
+      return this
+    },
+    saveFile(
+      path: string,
+      options= {},
+    ) {
+      path = path ?? this.path
+      const {
+        override = false,
+      } = options
+      const data = this.parsed
+        .root()
+        .generate();
+
+      file.saveFile(
+        path,
+        data,
+        {
+          override,
+        }
+      )
+
       return this
     }
   }
