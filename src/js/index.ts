@@ -2,19 +2,22 @@ import $ from 'gogocode'
 import * as t from '@babel/types';
 import {file} from '../utils';
 
-interface JS {
+interface Js {
   path: string;
   parsed: any;
-  readFile(path: string): JS;
-  replace(selector: string | t.Node, replacer: string | t.Node): JS;
+  readFile(path: string): Js;
+  replace(selector: string | t.Node, replacer: string | t.Node): Js;
   saveFile(
     path?: string | null,
     options?: {
       override?: boolean;
-    }): JS;
+    }): Js;
 }
 
-export default (): JS => {
+/**
+ * @public
+ */
+export default (): Js => {
   return {
     path: '',
     parsed: null,

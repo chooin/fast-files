@@ -1,26 +1,29 @@
 import _ from 'lodash'
 import {file, isDefined, isObject} from '../utils'
 
-interface JSON {
+interface Json {
   path: string;
   parsed: {
     [k: string]: any
   };
   get(key: string): any | void;
-  set(key: string, data: any): JSON;
+  set(key: string, data: any): Json;
   merge(data: {
     [k: string]: any
-  }): JSON;
-  readFile(path: string): JSON;
+  }): Json;
+  readFile(path: string): Json;
   saveFile(
     path?: string | null,
     options?: {
       override?: boolean;
       space?: number;
-    }): JSON;
+    }): Json;
 }
 
-export default (): JSON => {
+/**
+ * @public
+ */
+export default (): Json => {
   return {
     path: '',
     parsed: {},
