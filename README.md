@@ -76,6 +76,8 @@ json()
   })
 ```
 
+#### Change JS files
+
 ```js
 import path from 'path';
 import {js} from 'fast-files';
