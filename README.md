@@ -67,8 +67,23 @@ file.parsed
 import path from 'path'
 import {json} from 'fast-files'
 
-const file = json().readFile(path.resolve(__dirname, './json.json'))
-file.set('number', 1024)
-file.set('object.number', 2048)
-file.saveFile()
+json()
+  .readFile(path.resolve(__dirname, './json.json'))
+  .set('number', 1024)
+  .set('object.number', 2048)
+  .saveFile(null, {
+    override: true,
+  })
+```
+
+```js
+import path from 'path';
+import {js} from 'fast-files';
+
+js()
+  .readFile(path.resolve(__dirname, './js.js'))
+  .replace('var a = 1', 'var b = 1')
+  .saveFile(null, {
+    override: true,
+  })
 ```
