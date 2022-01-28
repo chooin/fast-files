@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import {file, isDefined, isObject} from '../utils'
+import {file} from '../utils'
 
 interface Json {
   path: string;
@@ -28,12 +28,12 @@ export default (): Json => {
     path: '',
     parsed: {},
     get(key) {
-      if (isDefined(key)) {
+      if (!_.isUndefined(key)) {
         return _.get(this.parsed, key)
       }
     },
     set(key, data) {
-      if (isDefined(data)) {
+      if (!_.isUndefined(data)) {
         _.set(this.parsed, key, data)
       }
 
@@ -49,7 +49,7 @@ export default (): Json => {
         const f = file.readFile(path)
         if (f.exists) {
           const parsed = JSON.parse(f.parsed)
-          if (isObject(parsed)) {
+          if (_.isObject(parsed)) {
             this.parsed = parsed
             this.path = path
           } else {
